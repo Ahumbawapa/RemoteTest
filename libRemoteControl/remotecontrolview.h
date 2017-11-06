@@ -21,10 +21,13 @@ public:
 signals:
     void serverRoleChanged(bool isServer);
     void hostAddressChanged(const QString& hostaddress);
+    void portChanged(int);
     void onPushbuttonListenOrConnectClicked();
+    void onPushButtonStopListenOrConnectClicked();
 
 public slots:
     void onRadiobuttonsServerRoleChanged();
+    void onServerError(const QString& errorMessage);
 
 private slots:
     QStringList loadInterfaces();

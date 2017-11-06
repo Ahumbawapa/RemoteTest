@@ -44,6 +44,7 @@ public:
     QPushButton *pushButtonStopListenOrConnection;
     QPushButton *pushButtonListenOrConnect;
     QSpinBox *spinBoxPort;
+    QLabel *labelErrorMessages;
     QSpacerItem *verticalSpacer;
 
     void setupUi(QWidget *RemoteControlView)
@@ -112,9 +113,8 @@ public:
         spinBoxPort->setObjectName(QStringLiteral("spinBoxPort"));
         sizePolicy.setHeightForWidth(spinBoxPort->sizePolicy().hasHeightForWidth());
         spinBoxPort->setSizePolicy(sizePolicy);
-        spinBoxPort->setMinimum(30000);
+        spinBoxPort->setMinimum(0);
         spinBoxPort->setMaximum(64000);
-        spinBoxPort->setValue(33333);
 
         gridLayout->addWidget(spinBoxPort, 1, 2, 1, 1);
 
@@ -123,6 +123,12 @@ public:
 
 
         verticalLayout->addWidget(groupBoxNetworkParams);
+
+        labelErrorMessages = new QLabel(RemoteControlView);
+        labelErrorMessages->setObjectName(QStringLiteral("labelErrorMessages"));
+        labelErrorMessages->setWordWrap(true);
+
+        verticalLayout->addWidget(labelErrorMessages);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -144,6 +150,7 @@ public:
         label_2->setText(QApplication::translate("RemoteControlView", "Port", Q_NULLPTR));
         pushButtonStopListenOrConnection->setText(QApplication::translate("RemoteControlView", "Stop", Q_NULLPTR));
         pushButtonListenOrConnect->setText(QApplication::translate("RemoteControlView", "Listen / Connect", Q_NULLPTR));
+        labelErrorMessages->setText(QString());
     } // retranslateUi
 
 };

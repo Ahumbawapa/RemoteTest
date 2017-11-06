@@ -4,10 +4,10 @@
 #include "libremotecontrol_global.h"
 
 #include <QtCore>
+#include <QTcpSocket>
 
 class RemoteControlView;
 class QTcpServer;
-class QTcpSocket;
 class QHostAddress;
 
 class libRemoteControlSHARED_EXPORT RemoteControlPresenter : public QObject
@@ -29,17 +29,20 @@ public:
 
 public slots:
 
+    void acceptConnection();
     void setIsServer(bool isServer);
     void setIpAddress(QString ipAddress);
     void setPort(quint16 port);
     void onServerRoleChanged(bool isServer);
     void onListenOrConnect();
+    void onStopListenOrConnect();
 
+    void getBytes();
 signals:
     void isServerChanged(bool isServer);
     void ipAddressChanged(QString ipAddress);
     void portChanged(quint16 port);
-    void serverError(const QString& errorMessage);
+    void serverMessage(const QString& errorMessage);
 
 private:
     bool m_isServer;
@@ -51,6 +54,7 @@ private:
     quint16 m_port;
     QTcpServer* m_tcpServer = nullptr;
     QTcpSocket* m_tcpClient = nullptr;
+    QTcpSocket* m_tcpServerConnection;
 };
 
 #endif // RemoteControlPresenter_H

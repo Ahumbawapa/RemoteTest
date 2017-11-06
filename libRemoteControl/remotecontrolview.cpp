@@ -19,7 +19,9 @@ RemoteControlView::RemoteControlView(RemoteControlPresenter *presenter, QWidget 
     connect(ui->radioButtonClient, &QRadioButton::clicked, this, &RemoteControlView::onRadiobuttonsServerRoleChanged);
     connect(ui->radioButtonServer, &QRadioButton::clicked, this, &RemoteControlView::onRadiobuttonsServerRoleChanged);
     connect(ui->comboBoxInterfaces, &QComboBox::currentTextChanged, this, &RemoteControlView::hostAddressChanged);
+    connect(ui->spinBoxPort, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &RemoteControlView::portChanged);
     connect(ui->pushButtonListenOrConnect, &QPushButton::clicked, this, &RemoteControlView::onPushbuttonListenOrConnectClicked);
+    connect(ui->pushButtonStopListenOrConnection, &QPushButton::clicked, this, &RemoteControlView::onPushButtonStopListenOrConnectClicked);
 
 }
 
@@ -54,6 +56,11 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
 
     emit serverRoleChanged(ui->radioButtonServer->isChecked());
 
+}
+
+void RemoteControlView::onServerError(const QString &errorMessage)
+{
+    ui->labelErrorMessages->setText(errorMessage);
 }
 
 QStringList RemoteControlView::loadInterfaces()

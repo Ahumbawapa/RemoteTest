@@ -13,7 +13,13 @@ RemoteControlPresenter::RemoteControlPresenter(QObject *parent)
 
     connect (m_View, &RemoteControlView::serverRoleChanged, this, &RemoteControlPresenter::setIsServer);
     connect (m_View, &RemoteControlView::hostAddressChanged, this, &RemoteControlPresenter::setIpAddress);
-    connect (m_View, &RemoteControlView::objectNameChanged, this, &RemoteControlPresenter::onListenOrConnect);
+    connect (m_View, &RemoteControlView::portChanged, this, &RemoteControlPresenter::setPort);
+    connect (m_View, &RemoteControlView::onPushbuttonListenOrConnectClicked, this, &RemoteControlPresenter::onListenOrConnect);
+    connect (m_View, &RemoteControlView::onPushButtonStopListenOrConnectClicked, this, &RemoteControlPresenter::onStopListenOrConnect);
+
+    connect (this, &RemoteControlPresenter::serverMessage, m_View, &RemoteControlView::onServerError);
+
+
 }
 
 bool RemoteControlPresenter::isServer() const
@@ -85,6 +91,8 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
         if(nullptr == m_tcpServer)
         {
             m_tcpServer = new QTcpServer();
+
+            connect(m_tcpServer, &QTcpServer::newConnection, this, &RemoteControlPresenter::acceptConnection);
         }
         else
         {
@@ -111,7 +119,10 @@ void RemoteControlPresenter::onListenOrConnect()
        m_tcpServer->listen(QHostAddress(m_ipAddress), m_port);
 
        if(false == m_tcpServer->isListening())
-        emit serverError(tr("Server nicht aktiv"));
+           emit serverMessage(tr("Server nicht aktiv"));
+       else
+           emit serverMessage(tr("Listening on %1:%2").arg(m_tcpServer->serverAddress().toString())
+                                                      .arg(QString::number(m_tcpServer->serverPort())));
 
    }
    else
@@ -120,4 +131,59 @@ void RemoteControlPresenter::onListenOrConnect()
    }
 }
 
+void RemoteControlPresenter::onStopListenOrConnect()
+{
+#ifdef LOG_FUNCTION_CALLS
+    qDebug() << "void RemoteControlPresenter::onStopListenOrConnect()";
+#endif /*LOG_FUNCTION_CALLS*/
+    if(this->isServer())
+    {
+        if(nullptr == m_tcpServer)
+            return;
+
+        m_tcpServerConnection->disconnectFromHost();
+        m_tcpServerConnection->deleteLater();
+
+        m_tcpServer->close();
+        emit serverMessage(tr("Listening stopped..."));
+    }
+
+}
+
+void RemoteControlPresenter::acceptConnection()
+{
+#ifdef LOG_FUNCTION_CALLS
+    qDebug() << "void RemoteControlPresenter::acceptConnection()";
+#endif /*LOG_FUNCTION_CALLS*/
+    emit serverMessage(tr("Accepting incoming connection..."));
+
+    if(this->isServer() && nullptr != m_tcpServer)
+    {
+        m_tcpServerConnection = m_tcpServer->nextPendingConnection();
+        connect(m_tcpServerConnection, &QTcpSocket::readyRead, this, &RemoteControlPresenter::getBytes);
+    }
+}
+
+void RemoteControlPresenter::getBytes()
+{
+    QByteArray block;
+    block.resize(1);
+
+    quint64 bytesAvailable = m_tcpServerConnection->bytesAvailable();
+    quint8 value = 0;
+
+    if(0 == bytesAvailable)
+    {
+        emit serverMessage(tr("0 Bytes available"));
+        return;
+    }
+
+
+    block =  m_tcpServerConnection->readAll();
+    value = block.at(0);
+    emit serverMessage((tr("Received %1 Bytes: Content %2").arg(bytesAvailable)
+                                                           .arg(value)));
+
+
+}
 
