@@ -3,8 +3,10 @@
 
 #include <QWidget>
 #include <libremotecontrol_global.h>
+#include <QAbstractSocket>
 
 class RemoteControlPresenter;
+
 
 namespace Ui {
 class RemoteControlView;
@@ -28,6 +30,7 @@ signals:
 public slots:
     void onRadiobuttonsServerRoleChanged();
     void onServerError(const QString& errorMessage);
+    void onConnectionStateChanged(QAbstractSocket::SocketState newSocketState);
 
 private slots:
     QStringList loadInterfaces();

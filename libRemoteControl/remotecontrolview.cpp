@@ -6,8 +6,6 @@
 #include <QStringList>
 
 
-
-
 RemoteControlView::RemoteControlView(RemoteControlPresenter *presenter, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RemoteControlView)
@@ -61,6 +59,40 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
 void RemoteControlView::onServerError(const QString &errorMessage)
 {
     ui->labelErrorMessages->setText(errorMessage);
+}
+
+void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState newSocketState)
+{
+    switch(newSocketState)
+    {
+        case QAbstractSocket::UnconnectedState:
+            ui->radioButtonUnconnected->setChecked(true);
+        break;
+
+        case QAbstractSocket::ConnectingState:
+            ui->radioButtonConnecting->setChecked(true);
+        break;
+
+        case QAbstractSocket::ConnectedState:
+            ui->radioButtonConnected->setChecked(true);
+        break;
+
+        case QAbstractSocket::HostLookupState:
+            ui->radioButtonHostLookup->setChecked(true);
+        break;
+
+        case QAbstractSocket::ListeningState:
+            ui->radioButtonListening->setChecked(true);
+        break;
+
+        case QAbstractSocket::BoundState:
+            ui->radioButtonBound->setChecked(true);
+        break;
+
+        case QAbstractSocket::ClosingState:
+            ui->radioButtonClosing->setChecked(true);
+        break;
+    }
 }
 
 QStringList RemoteControlView::loadInterfaces()
