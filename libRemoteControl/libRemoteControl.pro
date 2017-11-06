@@ -25,14 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     remotecontrolPresenter.cpp \
     remotecontrolview.cpp \
-    remoteserver.cpp
+    remoteserver.cpp \
+    remoteclient.cpp
 
 
 HEADERS += \
     libremotecontrol_global.h \
     remotecontrolPresenter.h \
     remotecontrolview.h \
-    remoteserver.h
+    remoteserver.h \
+    remoteclient.h
 
 
 unix {

@@ -26,7 +26,6 @@ public slots:
     void onStopListenOrConnect();
 
 signals:
-    void isServerChanged(bool isServer);
     void ipAddressChanged(QString ipAddress);
     void portChanged(quint16 port);
     void serverMessage(const QString& errorMessage);
