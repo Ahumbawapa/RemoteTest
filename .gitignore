@@ -1,0 +1,6 @@
+debug
+release
+*.user
+*.o
+*.a
+*.dll
