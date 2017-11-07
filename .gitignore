@@ -4,3 +4,7 @@ release
 *.o
 *.a
 *.dll
+*.stash
+Makefile.Release
+Makefile
+Makefile.Debug
