@@ -97,7 +97,6 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
 
             connect (this, &RemoteControlPresenter::outByteArrayChanged, m_remoteServer, &RemoteServer::sendOutputBytes);
 
-
         }
         else
         {
@@ -124,11 +123,11 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
 
             connect (m_remoteClient, &RemoteClient::clientMessage, m_View, &RemoteControlView::onClientMessage);
             connect (m_remoteClient, &RemoteClient::socketStateChanged, m_View, &RemoteControlView::onConnectionStateChanged);
+            connect (m_remoteClient, &RemoteClient::bytesReceived, this, &RemoteControlPresenter::setInByteArray);
 
             connect (this, &RemoteControlPresenter::outByteArrayChanged, m_remoteClient, &RemoteClient::sendOutputBytes);
-
+            connect (this, &RemoteControlPresenter::inByteArrayChanged, m_View, &RemoteControlView::onInbyteArrayChanged);
         }
-
     }
 }
 

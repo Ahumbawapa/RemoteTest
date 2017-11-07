@@ -118,6 +118,9 @@ void RemoteClient::onReadyRead()
 #ifdef LOG_FUNCTION_CALLS
     qDebug() << "void RemoteClient::onReadyRead()";
 #endif
+    emit clientMessage(tr("Bereit zum Lesen von %1 Bytes").arg(m_clientConnection.bytesAvailable()));
+    QByteArray inByteArray = m_clientConnection.readAll();
+    emit bytesReceived(inByteArray);
 }
 
 void RemoteClient::onConnected()
