@@ -22,6 +22,7 @@ signals:
     void hostAddressChanged(QString hostAddress);
     void portChanged(quint16 port);
     void clientMessage(const QString& message);
+    void bytesReceived(QByteArray);
 
 public slots:
     void connectToHost();
