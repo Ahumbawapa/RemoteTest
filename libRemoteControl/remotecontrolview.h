@@ -1,4 +1,4 @@
-#ifndef REMOTECONTROLVIEW_H
+﻿#ifndef REMOTECONTROLVIEW_H
 #define REMOTECONTROLVIEW_H
 
 #include <QWidget>
@@ -29,7 +29,8 @@ signals:
 
 public slots:
     void onRadiobuttonsServerRoleChanged();
-    void onServerError(const QString& errorMessage);
+    void onServerMessage(const QString& serverMessage);
+    void onClientMessage(const QString& clientMessage);
     void onConnectionStateChanged(QAbstractSocket::SocketState newSocketState);
 
 private slots:

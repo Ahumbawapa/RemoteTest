@@ -1,4 +1,5 @@
 #include "remoteclient.h"
+#include <QHostAddress>
 
 RemoteClient::RemoteClient(QObject *parent)
     : QObject(parent)
@@ -15,11 +16,16 @@ QString RemoteClient::hostAddress() const
 
 void RemoteClient::setHostAddress(QString hostAddress)
 {
+    QHostAddress addressCheck;
+    if(false == addressCheck.setAddress(hostAddress))
+        return;
+
     if (m_hostAddress == hostAddress)
         return;
 
     m_hostAddress = hostAddress;
     emit hostAddressChanged(m_hostAddress);
+    emit clientMessage(tr("Host address changed to %1").arg(m_hostAddress));
 }
 
 quint16 RemoteClient::port() const
@@ -35,6 +41,7 @@ void RemoteClient::setPort(quint16 port)
 
     m_port = port;
     emit portChanged(m_port);
+    emit clientMessage(tr("Port changed to %1").arg(m_port));
 }
 
 void RemoteClient::connectToHost()
@@ -42,6 +49,11 @@ void RemoteClient::connectToHost()
 #ifdef LOG_FUNCTION_CALLS
     qDebug() << "void RemoteClient::connectToHost()";
 #endif
+}
+
+void RemoteClient::disconnectFromHost()
+{
+    m_clientConnection.disconnectFromHost();
 }
 
 void RemoteClient::onStateChanged(QAbstractSocket::SocketState newSocketState)

@@ -4,7 +4,14 @@
 RemoteServer::RemoteServer(QObject *parent)
     :QTcpServer(parent)
 {
-        setMaxPendingConnections(1);
+    setMaxPendingConnections(1);
+}
+
+RemoteServer::~RemoteServer()
+{
+    if(QAbstractSocket::ConnectedState == m_clientConnection->state())
+        m_clientConnection->close();
+    m_clientConnection->deleteLater();
 }
 
 QString RemoteServer::ipAddress() const

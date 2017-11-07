@@ -21,9 +21,11 @@ signals:
     void socketStateChanged(QAbstractSocket::SocketState);
     void hostAddressChanged(QString hostAddress);
     void portChanged(quint16 port);
+    void clientMessage(const QString& message);
 
 public slots:
     void connectToHost();
+    void disconnectFromHost();
     void onStateChanged(QAbstractSocket::SocketState newSocketState);
     void setHostAddress(QString hostAddress);
     void setPort(quint16 port);

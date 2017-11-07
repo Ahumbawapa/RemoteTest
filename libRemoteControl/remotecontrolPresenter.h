@@ -10,6 +10,7 @@ class RemoteControlView;
 class QTcpServer;
 class QHostAddress;
 class RemoteServer;
+class RemoteClient;
 
 class libRemoteControlSHARED_EXPORT RemoteControlPresenter : public QObject
 {
@@ -43,7 +44,7 @@ private:
 
 
     RemoteServer* m_remoteServer = nullptr;
-    QTcpSocket* m_tcpClient = nullptr;
+    RemoteClient* m_remoteClient = nullptr;
 
 };
 

@@ -1,6 +1,7 @@
 #include "remotecontrolPresenter.h"
 #include "remotecontrolview.h"
 #include "remoteserver.h"
+#include "remoteclient.h"
 
 #include <QtNetwork>
 #include <QHostAddress>
@@ -43,10 +44,10 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
     setIsServer(isServer);
     if(this->isServer())
     {
-        if(nullptr != m_tcpClient)
+        if(nullptr != m_remoteClient)
         {
-            m_tcpClient->disconnectFromHost();
-            m_tcpClient->deleteLater();
+            m_remoteClient->disconnectFromHost();
+            m_remoteClient->deleteLater();
         }
 
         if(nullptr == m_remoteServer)
@@ -59,7 +60,7 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
             connect (m_View, &RemoteControlView::onPushbuttonListenOrConnectClicked     , m_remoteServer, &RemoteServer::onListenOrConnect);
             connect (m_View, &RemoteControlView::onPushButtonStopListenOrConnectClicked , m_remoteServer, &RemoteServer::onStopListenOrConnect);
 
-            connect (m_remoteServer, &RemoteServer::serverMessage, m_View, &RemoteControlView::onServerError);
+            connect (m_remoteServer, &RemoteServer::serverMessage, m_View, &RemoteControlView::onServerMessage);
             connect (m_remoteServer, &RemoteServer::serverStateChanged, m_View, &RemoteControlView::onConnectionStateChanged);
 
 
@@ -70,9 +71,29 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
             ;
         }
     }
-    else//-> is client
+    else//false == this->isServer()
     {
-        ;
+        if(nullptr != m_remoteServer)
+        {
+           m_remoteServer->close();
+           m_remoteServer->deleteLater();
+        }
+
+        if(nullptr == m_remoteClient)
+        {
+            m_remoteClient = new RemoteClient(this);
+
+            connect(m_View, &RemoteControlView::hostAddressChanged, m_remoteClient, &RemoteClient::setHostAddress);
+            connect(m_View, &RemoteControlView::portChanged, m_remoteClient, &RemoteClient::setPort);
+
+            connect (m_View, &RemoteControlView::onPushbuttonListenOrConnectClicked     , m_remoteClient, &RemoteClient::connectToHost);
+            connect (m_View, &RemoteControlView::onPushButtonStopListenOrConnectClicked , m_remoteClient, &RemoteClient::disconnectFromHost);
+
+            connect (m_remoteClient, &RemoteClient::clientMessage, m_View, &RemoteControlView::onClientMessage);
+            connect (m_remoteClient, &RemoteClient::socketStateChanged, m_View, &RemoteControlView::onConnectionStateChanged);
+
+        }
+
     }
 }
 

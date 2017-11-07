@@ -14,6 +14,7 @@ class RemoteServer : public QTcpServer
 
 public:
     RemoteServer(QObject* parent = Q_NULLPTR);
+    ~RemoteServer();
 
     QString ipAddress() const;
     quint16 port() const;

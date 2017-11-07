@@ -36,6 +36,7 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
         ui->comboBoxInterfaces->addItems(interfaces);
         ui->pushButtonListenOrConnect->setText(tr("Listen"));
         ui->pushButtonStopListenOrConnection->setText(tr("Stop Listening"));
+        ui->groupBoxServerStatus->setTitle(tr("Serverstatus"));
 
     }
     else
@@ -45,6 +46,7 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
         ui->comboBoxInterfaces->setEditText(tr("Enter IP-Adresse"));
         ui->pushButtonListenOrConnect->setText(tr("Connect"));
         ui->pushButtonStopListenOrConnection->setText(tr("Disconnect"));
+        ui->groupBoxServerStatus->setTitle(tr("Clientstatus"));
     }
 
     ui->groupBoxNetworkParams->setEnabled(true);
@@ -56,9 +58,14 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
 
 }
 
-void RemoteControlView::onServerError(const QString &errorMessage)
+void RemoteControlView::onServerMessage(const QString &serverMessage)
 {
-    ui->labelErrorMessages->setText(errorMessage);
+    ui->labelErrorMessages->setText(serverMessage);
+}
+
+void RemoteControlView::onClientMessage(const QString &clientMessage)
+{
+    ui->labelErrorMessages->setText(clientMessage);
 }
 
 void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState newSocketState)
