@@ -1,6 +1,6 @@
-#include "RemoteControlPresenter.h"
+#include "remotecontrolPresenter.h"
 #include "remotecontrolview.h"
-#include "remoteServer.h"
+#include "remoteserver.h"
 
 #include <QtNetwork>
 #include <QHostAddress>
