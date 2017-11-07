@@ -32,6 +32,10 @@ public slots:
 
     void onReadyRead();
     void onConnected();
+
+private slots:
+    void onError(QAbstractSocket::SocketError);
+
 private:
     QTcpSocket m_clientConnection;
     QString m_hostAddress;

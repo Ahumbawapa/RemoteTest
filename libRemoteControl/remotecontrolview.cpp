@@ -74,14 +74,17 @@ void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState ne
     {
         case QAbstractSocket::UnconnectedState:
             ui->radioButtonUnconnected->setChecked(true);
+            ui->pushButtonStopListenOrConnection->setEnabled(false);
         break;
 
         case QAbstractSocket::ConnectingState:
             ui->radioButtonConnecting->setChecked(true);
+            ui->pushButtonStopListenOrConnection->setEnabled(false);
         break;
 
         case QAbstractSocket::ConnectedState:
             ui->radioButtonConnected->setChecked(true);
+            ui->pushButtonStopListenOrConnection->setEnabled(true);
         break;
 
         case QAbstractSocket::HostLookupState:
