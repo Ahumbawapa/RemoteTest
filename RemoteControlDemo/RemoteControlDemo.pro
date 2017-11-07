@@ -41,6 +41,10 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libRemoteControl/deb
 INCLUDEPATH += $$PWD/../libRemoteControl
 DEPENDPATH += $$PWD/../libRemoteControl
 
+message ($$PWD)
+
+
+#unix:!macx: LIBS += -L$$PWD/../build-libRemoteControl-Desktop_Qt_5_9_2_GCC_64bit-Release/ -llibRemoteControl
 unix:!macx: LIBS += -L$$PWD/../build-libRemoteControl-Desktop_Qt_5_9_2_GCC_64bit-Debug/ -llibRemoteControl
 
 INCLUDEPATH += $$PWD/../libRemoteControl
