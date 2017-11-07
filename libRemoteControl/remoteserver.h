@@ -26,6 +26,7 @@ public slots:
     void onListenOrConnect();
     void onStopListenOrConnect();
 
+    void sendOutputBytes(QByteArray outByteArray);
 signals:
     void ipAddressChanged(QString ipAddress);
     void portChanged(quint16 port);

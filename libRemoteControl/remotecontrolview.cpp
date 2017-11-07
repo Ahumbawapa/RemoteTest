@@ -20,7 +20,7 @@ RemoteControlView::RemoteControlView(RemoteControlPresenter *presenter, QWidget 
     connect(ui->spinBoxPort, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &RemoteControlView::portChanged);
     connect(ui->pushButtonListenOrConnect, &QPushButton::clicked, this, &RemoteControlView::onPushbuttonListenOrConnectClicked);
     connect(ui->pushButtonStopListenOrConnection, &QPushButton::clicked, this, &RemoteControlView::onPushButtonStopListenOrConnectClicked);
-
+    connect(ui->pushButtonSendOutputBytes, &QPushButton::clicked, this, &RemoteControlView::onpushButtonSendOutputBytes);
 }
 
 RemoteControlView::~RemoteControlView()
@@ -36,7 +36,7 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
         ui->comboBoxInterfaces->addItems(interfaces);
         ui->pushButtonListenOrConnect->setText(tr("Listen"));
         ui->pushButtonStopListenOrConnection->setText(tr("Stop Listening"));
-        ui->groupBoxServerStatus->setTitle(tr("Serverstatus"));
+        ui->groupBoxConnectionStatus->setTitle(tr("Serverstatus"));
 
     }
     else
@@ -46,10 +46,11 @@ void RemoteControlView::onRadiobuttonsServerRoleChanged()
         ui->comboBoxInterfaces->setEditText(tr("Enter IP-Adresse"));
         ui->pushButtonListenOrConnect->setText(tr("Connect"));
         ui->pushButtonStopListenOrConnection->setText(tr("Disconnect"));
-        ui->groupBoxServerStatus->setTitle(tr("Clientstatus"));
+        ui->groupBoxConnectionStatus->setTitle(tr("Clientstatus"));
     }
 
     ui->groupBoxNetworkParams->setEnabled(true);
+    ui->pushButtonStopListenOrConnection->setEnabled(false);
 
     ui->radioButtonClient->setEnabled(false);
     ui->radioButtonServer->setEnabled(false);
@@ -75,6 +76,7 @@ void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState ne
         case QAbstractSocket::UnconnectedState:
             ui->radioButtonUnconnected->setChecked(true);
             ui->pushButtonStopListenOrConnection->setEnabled(false);
+            ui->groupBoxDataExchange->setEnabled(false);
         break;
 
         case QAbstractSocket::ConnectingState:
@@ -85,6 +87,7 @@ void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState ne
         case QAbstractSocket::ConnectedState:
             ui->radioButtonConnected->setChecked(true);
             ui->pushButtonStopListenOrConnection->setEnabled(true);
+            ui->groupBoxDataExchange->setEnabled(true);
         break;
 
         case QAbstractSocket::HostLookupState:
@@ -101,8 +104,68 @@ void RemoteControlView::onConnectionStateChanged(QAbstractSocket::SocketState ne
 
         case QAbstractSocket::ClosingState:
             ui->radioButtonClosing->setChecked(true);
+            ui->groupBoxDataExchange->setEnabled(false);
         break;
     }
+}
+
+void RemoteControlView::onInbyteArrayChanged(QByteArray newInByteArray)
+{
+    if(newInByteArray.size() == 0)
+    {
+        ui->lineEditInByteArray->setText("");
+        return;
+    }
+
+    QString byteString;
+    for(int index = 0; index != newInByteArray.size(); ++index)
+    {
+        if(newInByteArray.at(index) & 0x80)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x40)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x20)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x10)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x08)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x04)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x02)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newInByteArray.at(index) & 0x01)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        byteString += ' ';
+
+
+    }
+
+    ui->lineEditInByteArray->setText(byteString);
 }
 
 QStringList RemoteControlView::loadInterfaces()
@@ -120,4 +183,8 @@ QStringList RemoteControlView::loadInterfaces()
 
 }
 
-
+void RemoteControlView::onpushButtonSendOutputBytes()
+{
+    QByteArray bytesTosend = ui->lineEditOutByteArray->text().toLocal8Bit();
+    emit sendOutputBytes(bytesTosend);
+}

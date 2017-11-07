@@ -13,6 +13,10 @@ RemoteControlPresenter::RemoteControlPresenter(QObject *parent)
     m_isServerRoleUnknown = true;
 
     connect (m_View, &RemoteControlView::serverRoleChanged, this, &RemoteControlPresenter::setIsServer);
+    connect (m_View, &RemoteControlView::sendOutputBytes, this, &RemoteControlPresenter::setOutByteArray);
+
+    connect (this, &RemoteControlPresenter::inByteArrayChanged, m_View, &RemoteControlView::onInbyteArrayChanged);
+
 }
 
 bool RemoteControlPresenter::isServer() const
@@ -31,6 +35,34 @@ void RemoteControlPresenter::setIsServer(bool isServer)
 
     onServerRoleChanged(m_isServer);
     emit isServerChanged(m_isServer);
+}
+
+QByteArray RemoteControlPresenter::inByteArray() const
+{
+    return m_inByteArray;
+}
+
+void RemoteControlPresenter::setInByteArray(QByteArray inByteArray)
+{
+    if (m_inByteArray == inByteArray)
+        return;
+
+    m_inByteArray = inByteArray;
+    emit inByteArrayChanged(m_inByteArray);
+}
+
+QByteArray RemoteControlPresenter::outByteArray() const
+{
+    return m_outByteArray;
+}
+
+void RemoteControlPresenter::setOutByteArray(QByteArray outByteArray)
+{
+    if (m_outByteArray == outByteArray)
+        return;
+
+    m_outByteArray = outByteArray;
+    emit outByteArrayChanged(m_outByteArray);
 }
 
 QWidget* RemoteControlPresenter::getView()
@@ -63,6 +95,7 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
             connect (m_remoteServer, &RemoteServer::serverMessage, m_View, &RemoteControlView::onServerMessage);
             connect (m_remoteServer, &RemoteServer::serverStateChanged, m_View, &RemoteControlView::onConnectionStateChanged);
 
+            connect (this, &RemoteControlPresenter::outByteArrayChanged, m_remoteServer, &RemoteServer::sendOutputBytes);
 
 
         }
@@ -91,6 +124,8 @@ void RemoteControlPresenter::onServerRoleChanged(bool isServer)
 
             connect (m_remoteClient, &RemoteClient::clientMessage, m_View, &RemoteControlView::onClientMessage);
             connect (m_remoteClient, &RemoteClient::socketStateChanged, m_View, &RemoteControlView::onConnectionStateChanged);
+
+            connect (this, &RemoteControlPresenter::outByteArrayChanged, m_remoteClient, &RemoteClient::sendOutputBytes);
 
         }
 

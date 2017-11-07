@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>561</width>
-    <height>357</height>
+    <height>383</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
       <bool>false</bool>
      </property>
      <property name="title">
-      <string>ConnetionSettings</string>
+      <string>Verbindungseinstellungen</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -122,9 +122,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBoxServerStatus">
+    <widget class="QGroupBox" name="groupBoxConnectionStatus">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="title">
-      <string>Serverstatus</string>
+      <string>Verbindungsstatus</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="2">
@@ -175,6 +178,60 @@
          <string>Closing</string>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxDataExchange">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Sende- / Empfangstest</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Eingangsbytes:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditInByteArray"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonClearLineEditInByte">
+          <property name="text">
+           <string>Löschen</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Ausgangsbytes:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditOutByteArray"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonSendOutputBytes">
+          <property name="text">
+           <string>Senden</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

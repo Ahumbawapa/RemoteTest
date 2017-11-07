@@ -19,6 +19,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
@@ -45,7 +46,7 @@ public:
     QPushButton *pushButtonListenOrConnect;
     QSpinBox *spinBoxPort;
     QLabel *labelErrorMessages;
-    QGroupBox *groupBoxServerStatus;
+    QGroupBox *groupBoxConnectionStatus;
     QGridLayout *gridLayout_2;
     QRadioButton *radioButtonConnected;
     QRadioButton *radioButtonConnecting;
@@ -54,13 +55,23 @@ public:
     QRadioButton *radioButtonHostLookup;
     QRadioButton *radioButtonBound;
     QRadioButton *radioButtonClosing;
+    QGroupBox *groupBoxDataExchange;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label_3;
+    QLineEdit *lineEditInByteArray;
+    QPushButton *pushButtonClearLineEditInByte;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_4;
+    QLineEdit *lineEditOutByteArray;
+    QPushButton *pushButtonSendOutputBytes;
     QSpacerItem *verticalSpacer;
 
     void setupUi(QWidget *RemoteControlView)
     {
         if (RemoteControlView->objectName().isEmpty())
             RemoteControlView->setObjectName(QStringLiteral("RemoteControlView"));
-        RemoteControlView->resize(561, 357);
+        RemoteControlView->resize(561, 383);
         verticalLayout = new QVBoxLayout(RemoteControlView);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout = new QHBoxLayout();
@@ -139,47 +150,96 @@ public:
 
         verticalLayout->addWidget(labelErrorMessages);
 
-        groupBoxServerStatus = new QGroupBox(RemoteControlView);
-        groupBoxServerStatus->setObjectName(QStringLiteral("groupBoxServerStatus"));
-        gridLayout_2 = new QGridLayout(groupBoxServerStatus);
+        groupBoxConnectionStatus = new QGroupBox(RemoteControlView);
+        groupBoxConnectionStatus->setObjectName(QStringLiteral("groupBoxConnectionStatus"));
+        groupBoxConnectionStatus->setEnabled(false);
+        gridLayout_2 = new QGridLayout(groupBoxConnectionStatus);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        radioButtonConnected = new QRadioButton(groupBoxServerStatus);
+        radioButtonConnected = new QRadioButton(groupBoxConnectionStatus);
         radioButtonConnected->setObjectName(QStringLiteral("radioButtonConnected"));
 
         gridLayout_2->addWidget(radioButtonConnected, 0, 2, 1, 1);
 
-        radioButtonConnecting = new QRadioButton(groupBoxServerStatus);
+        radioButtonConnecting = new QRadioButton(groupBoxConnectionStatus);
         radioButtonConnecting->setObjectName(QStringLiteral("radioButtonConnecting"));
 
         gridLayout_2->addWidget(radioButtonConnecting, 0, 1, 1, 1);
 
-        radioButtonListening = new QRadioButton(groupBoxServerStatus);
+        radioButtonListening = new QRadioButton(groupBoxConnectionStatus);
         radioButtonListening->setObjectName(QStringLiteral("radioButtonListening"));
 
         gridLayout_2->addWidget(radioButtonListening, 0, 7, 1, 1);
 
-        radioButtonUnconnected = new QRadioButton(groupBoxServerStatus);
+        radioButtonUnconnected = new QRadioButton(groupBoxConnectionStatus);
         radioButtonUnconnected->setObjectName(QStringLiteral("radioButtonUnconnected"));
 
         gridLayout_2->addWidget(radioButtonUnconnected, 0, 0, 1, 1);
 
-        radioButtonHostLookup = new QRadioButton(groupBoxServerStatus);
+        radioButtonHostLookup = new QRadioButton(groupBoxConnectionStatus);
         radioButtonHostLookup->setObjectName(QStringLiteral("radioButtonHostLookup"));
 
         gridLayout_2->addWidget(radioButtonHostLookup, 1, 0, 1, 1);
 
-        radioButtonBound = new QRadioButton(groupBoxServerStatus);
+        radioButtonBound = new QRadioButton(groupBoxConnectionStatus);
         radioButtonBound->setObjectName(QStringLiteral("radioButtonBound"));
 
         gridLayout_2->addWidget(radioButtonBound, 1, 1, 1, 1);
 
-        radioButtonClosing = new QRadioButton(groupBoxServerStatus);
+        radioButtonClosing = new QRadioButton(groupBoxConnectionStatus);
         radioButtonClosing->setObjectName(QStringLiteral("radioButtonClosing"));
 
         gridLayout_2->addWidget(radioButtonClosing, 1, 2, 1, 1);
 
 
-        verticalLayout->addWidget(groupBoxServerStatus);
+        verticalLayout->addWidget(groupBoxConnectionStatus);
+
+        groupBoxDataExchange = new QGroupBox(RemoteControlView);
+        groupBoxDataExchange->setObjectName(QStringLiteral("groupBoxDataExchange"));
+        groupBoxDataExchange->setEnabled(false);
+        verticalLayout_3 = new QVBoxLayout(groupBoxDataExchange);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        label_3 = new QLabel(groupBoxDataExchange);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        horizontalLayout_2->addWidget(label_3);
+
+        lineEditInByteArray = new QLineEdit(groupBoxDataExchange);
+        lineEditInByteArray->setObjectName(QStringLiteral("lineEditInByteArray"));
+
+        horizontalLayout_2->addWidget(lineEditInByteArray);
+
+        pushButtonClearLineEditInByte = new QPushButton(groupBoxDataExchange);
+        pushButtonClearLineEditInByte->setObjectName(QStringLiteral("pushButtonClearLineEditInByte"));
+
+        horizontalLayout_2->addWidget(pushButtonClearLineEditInByte);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        label_4 = new QLabel(groupBoxDataExchange);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        horizontalLayout_3->addWidget(label_4);
+
+        lineEditOutByteArray = new QLineEdit(groupBoxDataExchange);
+        lineEditOutByteArray->setObjectName(QStringLiteral("lineEditOutByteArray"));
+
+        horizontalLayout_3->addWidget(lineEditOutByteArray);
+
+        pushButtonSendOutputBytes = new QPushButton(groupBoxDataExchange);
+        pushButtonSendOutputBytes->setObjectName(QStringLiteral("pushButtonSendOutputBytes"));
+
+        horizontalLayout_3->addWidget(pushButtonSendOutputBytes);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_3);
+
+
+        verticalLayout->addWidget(groupBoxDataExchange);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -196,13 +256,13 @@ public:
         RemoteControlView->setWindowTitle(QApplication::translate("RemoteControlView", "Form", Q_NULLPTR));
         radioButtonClient->setText(QApplication::translate("RemoteControlView", "Client", Q_NULLPTR));
         radioButtonServer->setText(QApplication::translate("RemoteControlView", "Server", Q_NULLPTR));
-        groupBoxNetworkParams->setTitle(QApplication::translate("RemoteControlView", "ConnetionSettings", Q_NULLPTR));
+        groupBoxNetworkParams->setTitle(QApplication::translate("RemoteControlView", "Verbindungseinstellungen", Q_NULLPTR));
         label->setText(QApplication::translate("RemoteControlView", "IP Adresse", Q_NULLPTR));
         label_2->setText(QApplication::translate("RemoteControlView", "Port", Q_NULLPTR));
         pushButtonStopListenOrConnection->setText(QApplication::translate("RemoteControlView", "Stop", Q_NULLPTR));
         pushButtonListenOrConnect->setText(QApplication::translate("RemoteControlView", "Listen / Connect", Q_NULLPTR));
         labelErrorMessages->setText(QString());
-        groupBoxServerStatus->setTitle(QApplication::translate("RemoteControlView", "Serverstatus", Q_NULLPTR));
+        groupBoxConnectionStatus->setTitle(QApplication::translate("RemoteControlView", "Verbindungsstatus", Q_NULLPTR));
         radioButtonConnected->setText(QApplication::translate("RemoteControlView", "Connected", Q_NULLPTR));
         radioButtonConnecting->setText(QApplication::translate("RemoteControlView", "Connecting", Q_NULLPTR));
         radioButtonListening->setText(QApplication::translate("RemoteControlView", "Listening", Q_NULLPTR));
@@ -210,6 +270,11 @@ public:
         radioButtonHostLookup->setText(QApplication::translate("RemoteControlView", "HostLookup", Q_NULLPTR));
         radioButtonBound->setText(QApplication::translate("RemoteControlView", "Bound", Q_NULLPTR));
         radioButtonClosing->setText(QApplication::translate("RemoteControlView", "Closing", Q_NULLPTR));
+        groupBoxDataExchange->setTitle(QApplication::translate("RemoteControlView", "Sende- / Empfangstest", Q_NULLPTR));
+        label_3->setText(QApplication::translate("RemoteControlView", "Eingangsbytes:", Q_NULLPTR));
+        pushButtonClearLineEditInByte->setText(QApplication::translate("RemoteControlView", "L\303\266schen", Q_NULLPTR));
+        label_4->setText(QApplication::translate("RemoteControlView", "Ausgangsbytes:", Q_NULLPTR));
+        pushButtonSendOutputBytes->setText(QApplication::translate("RemoteControlView", "Senden", Q_NULLPTR));
     } // retranslateUi
 
 };

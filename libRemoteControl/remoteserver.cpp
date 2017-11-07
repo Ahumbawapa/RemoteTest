@@ -30,6 +30,7 @@ void RemoteServer::setIpAddress(QString ipAddress)
 
     m_ipAddress = ipAddress;
     emit ipAddressChanged(m_ipAddress);
+    emit serverMessage(tr("IP-Adresse gesetzt auf: %1").arg(m_ipAddress));
 }
 
 quint16 RemoteServer::port() const
@@ -44,6 +45,7 @@ void RemoteServer::setPort(quint16 port)
 
     m_port = port;
     emit portChanged(m_port);
+    emit serverMessage(tr("Port gesetzt auf: %1").arg(m_port));
 }
 
 void RemoteServer::onListenOrConnect()
@@ -51,10 +53,16 @@ void RemoteServer::onListenOrConnect()
        listen(QHostAddress(m_ipAddress), m_port);
 
        if(false == isListening())
+       {
            emit serverMessage(tr("Server nicht aktiv"));
+       }
        else
+       {
            emit serverMessage(tr("Listening on %1:%2").arg(serverAddress().toString())
-                                                      .arg(QString::number(serverPort())));
+                              .arg(QString::number(serverPort())));
+
+           emit serverStateChanged(QAbstractSocket::ListeningState);
+       }
 
 }
 
@@ -85,11 +93,15 @@ void RemoteServer::incomingConnection(qintptr socketDescriptor)
     {
 
         m_clientConnection = new QTcpSocket();
-        m_clientConnection->setSocketDescriptor(socketDescriptor);
-        connect(m_clientConnection, SIGNAL(error(QAbstractSocket::SocketError)), this,  SLOT(onClientConnectionError(QAbstractSocket::SocketError)));
-        connect(m_clientConnection, &QTcpSocket::readyRead, this, &RemoteServer::onClientReadyRead);
-        connect(m_clientConnection, &QTcpSocket::disconnected, m_clientConnection, &QTcpSocket::deleteLater);
-        connect(m_clientConnection, &QTcpSocket::stateChanged, this, &RemoteServer::serverStateChanged);
+        if(m_clientConnection->setSocketDescriptor(socketDescriptor))
+        {
+            emit serverStateChanged(QAbstractSocket::ConnectedState);
+            connect(m_clientConnection, SIGNAL(error(QAbstractSocket::SocketError)), this,  SLOT(onClientConnectionError(QAbstractSocket::SocketError)));
+            connect(m_clientConnection, &QTcpSocket::readyRead, this, &RemoteServer::onClientReadyRead);
+            connect(m_clientConnection, &QTcpSocket::disconnected, m_clientConnection, &QTcpSocket::deleteLater);
+            connect(m_clientConnection, &QTcpSocket::stateChanged, this, &RemoteServer::serverStateChanged);
+
+        }
     }
 }
 
@@ -119,5 +131,17 @@ void RemoteServer::onClientReadyRead()
     emit serverMessage((tr("Received %1 Bytes: Content: %2").arg(bytesAvailable)
                                                            .arg(value)));
 
+}
+
+void RemoteServer::sendOutputBytes(QByteArray outByteArray)
+{
+    if(m_clientConnection->state() != QAbstractSocket::ConnectedState)
+    {
+        emit serverMessage(tr("Keine Clientverbindung. Senden nicht möglich"));
+        return;
+    }
+
+    emit serverMessage(tr("Sende %1 Byte Daten").arg(outByteArray.size()));
+    m_clientConnection->write(outByteArray);
 
 }

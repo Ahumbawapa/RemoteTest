@@ -126,3 +126,16 @@ void RemoteClient::onConnected()
     qDebug() << "void RemoteClient::onConnected()";
 #endif
 }
+
+void RemoteClient::sendOutputBytes(QByteArray outByteArray)
+{
+    if(m_clientConnection.state() != QAbstractSocket::ConnectedState)
+    {
+        emit clientMessage(tr("Keine Clientverbindung. Senden nicht möglich"));
+        return;
+    }
+
+    emit clientMessage(tr("Sende %1 Byte Daten").arg(outByteArray.size()));
+    m_clientConnection.write(outByteArray);
+
+}

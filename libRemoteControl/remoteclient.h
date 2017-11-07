@@ -33,6 +33,7 @@ public slots:
     void onReadyRead();
     void onConnected();
 
+    void sendOutputBytes(QByteArray outByteArray);
 private slots:
     void onError(QAbstractSocket::SocketError);
 

@@ -26,15 +26,17 @@ signals:
     void portChanged(int);
     void onPushbuttonListenOrConnectClicked();
     void onPushButtonStopListenOrConnectClicked();
+    void sendOutputBytes(QByteArray newOutBytes);
 
 public slots:
     void onRadiobuttonsServerRoleChanged();
     void onServerMessage(const QString& serverMessage);
     void onClientMessage(const QString& clientMessage);
     void onConnectionStateChanged(QAbstractSocket::SocketState newSocketState);
-
+    void onInbyteArrayChanged(QByteArray newInByteArray);
 private slots:
     QStringList loadInterfaces();
+    void onpushButtonSendOutputBytes();
 
 private:
     Ui::RemoteControlView *ui;
