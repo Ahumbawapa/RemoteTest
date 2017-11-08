@@ -21,6 +21,8 @@ RemoteControlView::RemoteControlView(RemoteControlPresenter *presenter, QWidget 
     connect(ui->pushButtonListenOrConnect, &QPushButton::clicked, this, &RemoteControlView::onPushbuttonListenOrConnectClicked);
     connect(ui->pushButtonStopListenOrConnection, &QPushButton::clicked, this, &RemoteControlView::onPushButtonStopListenOrConnectClicked);
     connect(ui->pushButtonSendOutputBytes, &QPushButton::clicked, this, &RemoteControlView::onpushButtonSendOutputBytes);
+    connect(ui->pushButtonClearLineEditInByte, &QPushButton::clicked, ui->lineEditInByteArray, &QLineEdit::clear);
+
 }
 
 RemoteControlView::~RemoteControlView()
