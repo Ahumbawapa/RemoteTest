@@ -170,6 +170,65 @@ void RemoteControlView::onInbyteArrayChanged(QByteArray newInByteArray)
     ui->lineEditInByteArray->setText(byteString);
 }
 
+void RemoteControlView::onOutbyteArrayChanged(QByteArray newOutByteArray)
+{
+    if(newOutByteArray.size() == 0)
+    {
+        ui->lineEditInByteArray->setText("");
+        return;
+    }
+
+    QString byteString;
+    for(int index = 0; index != newOutByteArray.size(); ++index)
+    {
+        if(newOutByteArray.at(index) & 0x80)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x40)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x20)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x10)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x08)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x04)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x02)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        if(newOutByteArray.at(index) & 0x01)
+            byteString += '1';
+        else
+            byteString +=  '0';
+
+        byteString += ' ';
+
+
+    }
+
+    ui->lineEditOutByteArray->setText(byteString);
+}
+
 QStringList RemoteControlView::loadInterfaces()
 {
     QList<QHostAddress> interfaces = QNetworkInterface::allAddresses();

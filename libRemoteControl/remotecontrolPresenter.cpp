@@ -16,6 +16,7 @@ RemoteControlPresenter::RemoteControlPresenter(QObject *parent)
     connect (m_View, &RemoteControlView::sendOutputBytes, this, &RemoteControlPresenter::setOutByteArray);
 
     connect (this, &RemoteControlPresenter::inByteArrayChanged, m_View, &RemoteControlView::onInbyteArrayChanged);
+    connect (this, &RemoteControlPresenter::outByteArrayChanged, m_View, &RemoteControlView::onOutbyteArrayChanged);
 
 }
 

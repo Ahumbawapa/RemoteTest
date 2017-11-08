@@ -5,6 +5,7 @@
 
 class MainWindow;
 class RemoteControlPresenter;
+class LaserRemoteControlPresenter;
 
 class mainPresenter : public QObject
 {
@@ -17,6 +18,7 @@ public:
 private:
     MainWindow* m_View;
     RemoteControlPresenter* m_remoteControlPresenter = nullptr;
+    LaserRemoteControlPresenter* m_laserRemoteControlPresenter = nullptr;
 };
 
 #endif // MAINPRESENTER_H

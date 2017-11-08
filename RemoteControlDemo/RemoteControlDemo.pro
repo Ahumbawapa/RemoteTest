@@ -49,3 +49,10 @@ unix:!macx: LIBS += -L$$PWD/../build-libRemoteControl-Desktop_Qt_5_9_2_GCC_64bit
 
 INCLUDEPATH += $$PWD/../libRemoteControl
 DEPENDPATH += $$PWD/../libRemoteControl
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../laserRemoteControl/release/ -llaserRemoteControl
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../laserRemoteControl/debug/ -llaserRemoteControl
+else:unix:!macx: LIBS += -L$$PWD/../../laserRemoteControl/ -llaserRemoteControl
+
+INCLUDEPATH += $$PWD/../../laserRemoteControl
+DEPENDPATH += $$PWD/../../laserRemoteControl

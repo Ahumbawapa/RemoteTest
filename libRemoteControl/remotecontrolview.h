@@ -34,6 +34,7 @@ public slots:
     void onClientMessage(const QString& clientMessage);
     void onConnectionStateChanged(QAbstractSocket::SocketState newSocketState);
     void onInbyteArrayChanged(QByteArray newInByteArray);
+    void onOutbyteArrayChanged(QByteArray newOutByteArray);
 private slots:
     QStringList loadInterfaces();
     void onpushButtonSendOutputBytes();
